@@ -10,6 +10,7 @@ class Person:
         self.details['name']=name
         self.details['address']=address
         self.details['email']=email
+        #Phone is an set that's reference is recorded on details dictonary
         self.details['phonelist']=phone
 
 #Gives instruction what the user need to at the beginig of the program
@@ -43,7 +44,9 @@ def AddNewContact():
     myObj=Person(Name,Address,Email,Number)
     PhoneBook.append(myObj)
     COUNTENTITY=COUNTENTITY+1
-#The following function will 
+
+
+#The following function will update the existing value 
 def UpdateDetails(sl):
     sl=sl-1
     if(int(sl) not in range(0,COUNTENTITY)):
@@ -63,23 +66,27 @@ def UpdateDetails(sl):
             pass
         elif(int(exit)==2):
             PhoneBook[sl].details['address']=input("Enter new Address: ")
+            pass
         elif(int(exit)==3):
             PhoneBook[sl].details['email']=input("Enter new Email: ")
+            pass
         elif(int(exit)==4):
+            #View the existing phone number before modifying it
             print("Available Phone number")
-            for x in PhoneBook[sl].details['phone']:
+            for x in PhoneBook[sl].details['phonelist']:
                 print(x)
             print("1. Delete a number")
             print("2. Add a new number")
             ch=input("Enter choice: ")
             if(int(ch)==1):
                 num=print("Type the full number to delete:")
-                PhoneBook[sl].details['phone'].discard(num)
+                PhoneBook[sl].details['phonelist'].discard(num)
             elif(int(ch)==2):
-                PhoneBook[sl].details['phone'].add(input("Enter new number:"))
+                PhoneBook[sl].details['phonelist'].add(input("Enter new number:"))
+                
 
 
-
+#Display the available list of contact form PhoneBook Dictionary
 def PrintDetails():
     for i in range(len(PhoneBook)):
         print('\n')
@@ -88,7 +95,6 @@ def PrintDetails():
         print("Address: {}".format(PhoneBook[i].details['address']))
         print("Email: {}".format(PhoneBook[i].details['email']))
         print("Phone numbers: {}".format(PhoneBook[i].details['phonelist']))
-    print("Enter SL no to update the details: ")
 
 a=PrintPromt()
 
@@ -106,11 +112,14 @@ while(a!='q'):
     elif int(a)==2:
         AddNewContact()
         a=PrintPromt()
+    #Update existing contact details
     elif int(a)==3:
         ch=input("Enter sl to update or q to quit: ")
         if(int(ch) in range(1,1000)):
             UpdateDetails(int(ch))
         elif(ch=='q'):
+            a=PrintPromt()
+        else:
             a=PrintPromt()
 
 
