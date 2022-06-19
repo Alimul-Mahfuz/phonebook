@@ -1,4 +1,4 @@
-
+import json
 COUNTENTITY=0
 a=0
 PhoneBook=[]
@@ -83,7 +83,58 @@ def UpdateDetails(sl):
                 PhoneBook[sl].details['phonelist'].discard(num)
             elif(int(ch)==2):
                 PhoneBook[sl].details['phonelist'].add(input("Enter new number:"))
-                
+
+
+def PrintJson():
+    with open('./pythonProject/PhoneBook/data.json','w') as fobj:
+        json.dump(PhoneBook[0].details,fobj,indent=4)
+
+
+def SearchContact():
+    found=False
+    index=0
+    phone=input("Enter Phone number to search")
+    for x in PhoneBook:
+        index=index+1
+        if phone in x.details['phonelist']:
+            print("Number found")
+            found=True
+            print("Details of the Person")
+            print("Name: {}".format(x.details['name']))
+            print("Address: {}".format(x.details['address']))
+            print("Email: {}".format(x.details['email']))
+            ch=input("Want to update the persons's details y/n: ")
+            if(ch=='y' or ch=='Y'):
+                UpdateDetails(index)
+            if(ch=='n' or ch=='N'):
+                print('Okay Thanks you')
+            pass
+    if(found==False):
+        print("Number doesn't exists")
+
+
+def DeleteContact():
+    sl=int(input("Enter the sl to delete: "))
+    sl=sl-1
+    if(int(sl) not in range(0,COUNTENTITY)):
+        print("SL not exist")
+        pass
+    del(PhoneBook[sl])
+    print("Contact Deleted Successfully")
+
+
+def Print():
+    fname="./pythonProject/PhoneBook/data.txt"
+    with open(fname,'w') as file_obj:
+        for i in range(len(PhoneBook)):
+            file_obj.write('\n')
+            file_obj.writelines('\n#SL{}----------------------'.format(i+1))
+            file_obj.writelines("\nName: {}".format(PhoneBook[i].details['name']))
+            file_obj.writelines("\nAddress: {}".format(PhoneBook[i].details['address']))
+            file_obj.writelines("\nEmail: {}".format(PhoneBook[i].details['email']))
+            file_obj.writelines("\nPhone numbers: {}".format(PhoneBook[i].details['phonelist']))
+    
+        
 
 
 #Display the available list of contact form PhoneBook Dictionary
@@ -115,12 +166,29 @@ while(a!='q'):
     #Update existing contact details
     elif int(a)==3:
         ch=input("Enter sl to update or q to quit: ")
-        if(int(ch) in range(1,1000)):
-            UpdateDetails(int(ch))
-        elif(ch=='q'):
+        # if(int(ch) in range(1,1000)):
+        #     UpdateDetails(int(ch))
+        if(ch=='q'):
             a=PrintPromt()
         else:
+            UpdateDetails(int(ch))
             a=PrintPromt()
+    elif int(a)==4:
+        SearchContact()
+        a=PrintPromt()
+
+    elif int(a)==5:
+        DeleteContact()
+        a=PrintPromt()
+    elif int(a)==6:
+        Print()
+        a=PrintPromt()
+
+
+
+
+
+
 
 
         
